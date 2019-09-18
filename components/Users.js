@@ -9,10 +9,10 @@ import {
 import {TopBar} from './TopBar';
 import {fetchUsers} from '../functions/dataFunctions';
 
-const renderUsers = (users, {navigation}, address = 1) => {
-  if (users && users.data && address) {
+const renderUsers = (users, {navigation}, addressID) => {
+  if (users && users.data && addressID) {
     return users.data.map(user => {
-      if (user.address == address) {
+      if (user.address == addressID) {
         return (
           <TouchableOpacity
             key={user.id}
@@ -50,7 +50,7 @@ export const Users = ({navigation}) => {
       <Text style={styles.header}>Users</Text>
 
       <View style={styles.addressHeaderBlock}>
-        <Text style={styles.addressHeader}>Address: </Text>
+        <Text style={styles.addressHeader}>Address:</Text>
 
         <Text style={styles.userAddress}>
           {navigation.state.params.address}
@@ -122,7 +122,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   userAddress: {
-    fontSize: 16,
+    marginLeft: 13,
+    fontSize: 14,
   },
   spacer: {
     marginTop: 5,
