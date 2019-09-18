@@ -1,19 +1,19 @@
 import {createAppContainer} from 'react-navigation';
 import {Users} from '../components/Users';
 import { createDrawerNavigator } from 'react-navigation-drawer';
-import { Location } from '../components/Location';
+import { Locations } from '../components/Locations';
 
 const MainNavigator = createDrawerNavigator({
+  Locations: {
+    screen: Locations,
+    navigationOptions: ({navigation}) => ({
+      title: 'Locations',
+    }),
+  },
   Users: {
     screen: Users,
     navigationOptions: ({navigation}) => ({
       title: 'Users',
-    }),
-  },
-  Location: {
-    screen: Location,
-    navigationOptions: ({navigation}) => ({
-      title: 'Location',
     }),
   },
 });

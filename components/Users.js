@@ -2,16 +2,14 @@ import React, {useEffect, useState} from 'react';
 import {
   View,
   StyleSheet,
-  Image,
   Text,
   TouchableOpacity,
   ScrollView,
-  Picker,
 } from 'react-native';
 import {TopBar} from './TopBar';
-import {fetchData, postData} from '../functions/dataFunctions';
+import {fetchUsers} from '../functions/dataFunctions';
 
-const renderUsers = (users, {navigation}, address) => {
+const renderUsers = (users, {navigation}, address = 1) => {
   if (users && users.data && address) {
     return users.data.map(user => {
       if (user.address == address) {
@@ -20,8 +18,6 @@ const renderUsers = (users, {navigation}, address) => {
             key={user.id}
             style={styles.userCard}
             onPress={() => navigation.navigate('Location')}>
-            <Image style={styles.userAvatar} source={{uri: user.avatar}} />
-
             <View style={styles.infoBlock}>
               <View style={styles.userName}>
                 <Text>{user.name}</Text>
@@ -33,10 +29,6 @@ const renderUsers = (users, {navigation}, address) => {
                 <Text style={styles.userTitle}>{user.job_title}</Text>
               </View>
             </View>
-
-            <View style={styles.userAddressBlock}>
-              <Text style={styles.userAddress}>{user.address}</Text>
-            </View>
           </TouchableOpacity>
         );
       }
@@ -44,74 +36,41 @@ const renderUsers = (users, {navigation}, address) => {
   }
 };
 
-const renderAdresses = users => {
-  if (users && users.data) {
-    return users.data.map(user => {
-      return (
-        <Picker.Item
-          key={user.address}
-          label={`${user.address}`}
-          value={user.address}
-        />
-      );
-    });
-  }
-};
-
 export const Users = ({navigation}) => {
   const [users, setUsers] = useState(0);
-  const [address, setAddress] = useState(0);
 
   useEffect(() => {
-    fetchData().then(data => setUsers(data));
+    fetchUsers().then(data => setUsers(data));
   }, []);
 
   return (
-    <View styles={styles.container}>
+    <View>
       <TopBar navigation={navigation} />
 
       <Text style={styles.header}>Users</Text>
 
-      <View style={styles.pickerBlock}>
-        <Text>Address: </Text>
-        <Picker
-          selectedValue={address}
-          style={styles.pickerStyle}
-          onValueChange={(itemValue, itemIndex) => {
-            setAddress(itemValue);
-          }}>
-          {renderAdresses(users)}
-        </Picker>
+      <View style={styles.addressHeaderBlock}>
+        <Text style={styles.addressHeader}>Address: </Text>
+
+        <Text style={styles.userAddress}>
+          {navigation.state.params.address}
+        </Text>
       </View>
 
       <ScrollView contentContainerStyle={styles.usersList}>
-        {renderUsers(users, {navigation}, address)}
+        {renderUsers(users, {navigation}, navigation.state.params.addressID)}
       </ScrollView>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {},
   header: {
     marginLeft: 20,
     fontWeight: 'bold',
     fontSize: 30,
   },
-  pickerBlock: {
-    marginLeft: 20,
-
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  pickerStyle: {
-    marginLeft: 20,
-
-    height: 50,
-    width: 100,
-  },
   usersList: {
-    // height: 800,
     paddingLeft: 20,
     paddingRight: 20,
     paddingTop: 13,
@@ -153,10 +112,14 @@ const styles = StyleSheet.create({
   userTitle: {
     color: 'grey',
   },
-  userAddressBlock: {
-    position: 'absolute',
-    right: 16,
-    top: 16,
+  addressHeaderBlock: {
+    flexDirection: 'row',
+    marginLeft: 20,
+    marginTop: 13,
+  },
+  addressHeader: {
+    fontSize: 20,
+    fontWeight: 'bold',
   },
   userAddress: {
     fontSize: 16,
