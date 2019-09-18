@@ -1,11 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-} from 'react-native';
+import {View, StyleSheet, Text, ScrollView} from 'react-native';
 import {TopBar} from './TopBar';
 import {fetchUsers} from '../functions/dataFunctions';
 
@@ -14,10 +8,7 @@ const renderUsers = (users, {navigation}, addressID) => {
     return users.data.map(user => {
       if (user.address == addressID) {
         return (
-          <TouchableOpacity
-            key={user.id}
-            style={styles.userCard}
-            onPress={() => navigation.navigate('Location')}>
+          <View key={user.id} style={styles.userCard}>
             <View style={styles.infoBlock}>
               <View style={styles.userName}>
                 <Text>{user.name}</Text>
@@ -29,10 +20,12 @@ const renderUsers = (users, {navigation}, addressID) => {
                 <Text style={styles.userTitle}>{user.job_title}</Text>
               </View>
             </View>
-          </TouchableOpacity>
+          </View>
         );
       }
     });
+  } else {
+    return null;
   }
 };
 
@@ -53,12 +46,12 @@ export const Users = ({navigation}) => {
         <Text style={styles.addressHeader}>Address:</Text>
 
         <Text style={styles.userAddress}>
-          {navigation.state.params.address}
+          {navigation.getParam('address', 'Choose city in \"Locations\"')}
         </Text>
       </View>
 
       <ScrollView contentContainerStyle={styles.usersList}>
-        {renderUsers(users, {navigation}, navigation.state.params.addressID)}
+        {renderUsers(users, {navigation}, navigation.getParam('addressID', 0))}
       </ScrollView>
     </View>
   );
@@ -84,36 +77,20 @@ const styles = StyleSheet.create({
     height: 90,
     backgroundColor: '#FFF',
     borderRadius: 10,
-
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-
-    elevation: 5,
+    borderWidth: 0.2,
+    borderColor: '#000',
   },
   infoBlock: {
     flexDirection: 'column',
     marginLeft: 20,
-  },
-  userAvatar: {
-    marginLeft: 20,
-
-    height: 50,
-    width: 50,
-    borderRadius: 50,
-    backgroundColor: '#FFF',
-    borderWidth: 1,
-    borderColor: '#000',
   },
   userTitle: {
     color: 'grey',
   },
   addressHeaderBlock: {
     flexDirection: 'row',
+    alignItems: 'center',
+
     marginLeft: 20,
     marginTop: 13,
   },
@@ -123,7 +100,7 @@ const styles = StyleSheet.create({
   },
   userAddress: {
     marginLeft: 13,
-    fontSize: 14,
+    fontSize: 15,
   },
   spacer: {
     marginTop: 5,

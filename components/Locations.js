@@ -19,7 +19,7 @@ const renderLocations = (locations, {navigation}) => {
           onPress={() =>
             navigation.navigate('Users', {
               addressID: location.data.id,
-              address: location.data.address,
+              address: `${location.data.city},\n${location.data.address}`,
             })
           }>
           <Text style={styles.locationID}>{location.data.id}</Text>
