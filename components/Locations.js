@@ -10,23 +10,23 @@ import {TopBar} from './TopBar';
 import {fetchLocations} from '../functions/dataFunctions';
 
 const renderLocations = (locations, {navigation}) => {
-  if (locations) {
-    return locations.map(location => {
+  if (locations && locations.data) {
+    return locations.data.map(location => {
       return (
         <TouchableOpacity
-          key={location.data.id}
+          key={location.id}
           style={styles.locationCard}
           onPress={() =>
             navigation.navigate('Users', {
-              addressID: location.data.id,
-              address: `${location.data.city},\n${location.data.address}`,
+              addressID: location.id,
+              address: `${location.city},\n${location.address}`,
             })
           }>
-          <Text style={styles.locationID}>{location.data.id}</Text>
+          <Text style={styles.locationID}>{location.id}</Text>
 
           <View style={styles.locationInfoBlock}>
-            <Text style={styles.locationCity}>{location.data.city}</Text>
-            <Text style={styles.locationAddress}>{location.data.address}</Text>
+            <Text style={styles.locationCity}>{location.city}</Text>
+            <Text style={styles.locationAddress}>{location.address}</Text>
           </View>
         </TouchableOpacity>
       );
