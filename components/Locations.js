@@ -59,6 +59,10 @@ Locations.navigationOptions = () => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+  },
   header: {
     marginLeft: 20,
     fontWeight: 'bold',
