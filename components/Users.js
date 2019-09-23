@@ -37,7 +37,7 @@ export const Users = ({navigation}) => {
   }, []);
 
   return (
-    <View>
+    <View style={styles.container}>
       <TopBar navigation={navigation} />
 
       <Text style={styles.header}>Users</Text>
@@ -58,6 +58,10 @@ export const Users = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+  },
   header: {
     marginLeft: 20,
     fontWeight: 'bold',
